@@ -56,6 +56,10 @@ void UFightingComponent::DoAttack()
 					return;
 
 				}
+				else
+				{
+					return;
+				}
 			}
 			else
 			{
