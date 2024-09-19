@@ -17,4 +17,9 @@ class TGD_NEKKI_API UAttackGameplayAbility : public UGameplayAbility
 protected:
 	UFUNCTION(BlueprintNativeEvent)
 	void StartNextAttack();
+	UFUNCTION(BlueprintCallable)
+		TArray<AActor*> SortArrayByAngle(AActor* PrimaryActor, TArray<AActor*> InArray);
+	UFUNCTION(BlueprintCallable)
+	float GetAngleBetweenTwoActorsCustom(AActor* PrimaryActor, AActor* OtherActor);
+
 };
