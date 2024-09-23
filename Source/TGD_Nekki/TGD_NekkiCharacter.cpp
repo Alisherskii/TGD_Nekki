@@ -12,6 +12,7 @@
 #include "InputActionValue.h"
 #include "BaseAbilitySystemComponent.h"
 #include "ActorComponents/Character/FightingComponent.h"
+#include "ActorComponents/Character/HitReactionComponent.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
@@ -55,6 +56,7 @@ ATGD_NekkiCharacter::ATGD_NekkiCharacter()
 
 	AbilitySystemComponent = CreateDefaultSubobject<UBaseAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
 	FightingComponent = CreateDefaultSubobject<UFightingComponent>(TEXT("FightingComponent"));
+	
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named ThirdPersonCharacter (to avoid direct content references in C++)
 }
@@ -63,7 +65,7 @@ void ATGD_NekkiCharacter::BeginPlay()
 {
 	// Call the base class  
 	Super::BeginPlay();
-
+	HitReactionComponent = FindComponentByClass<UHitReactionComponent>();
 	//Add Input Mapping Context
 	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
 	{
@@ -142,4 +144,12 @@ void ATGD_NekkiCharacter::Look(const FInputActionValue& Value)
 void ATGD_NekkiCharacter::DoMeleeAttack(const FInputActionValue& Value)
 {
 	FightingComponent->DoAttack();
+}
+
+void ATGD_NekkiCharacter::OnDamageTaken_Implementation(ATGD_NekkiCharacter* InstigatorRef, float Damage)
+{
+	if (IsValid(HitReactionComponent))
+	{
+		HitReactionComponent->HitReact(InstigatorRef);
+	}
 }

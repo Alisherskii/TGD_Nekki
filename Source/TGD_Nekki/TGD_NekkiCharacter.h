@@ -9,12 +9,14 @@
 
 
 
+
 class USpringArmComponent;
 class UCameraComponent;
 class UInputMappingContext;
 class UInputAction;
 class UBaseAbilitySystemComponent;
 class UFightingComponent;
+class UHitReactionComponent;
 struct FInputActionValue;
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Log, All);
@@ -59,10 +61,15 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TObjectPtr<UFightingComponent> FightingComponent;
 
+	UPROPERTY(BlueprintReadOnly)
+	UHitReactionComponent* HitReactionComponent = nullptr;
+	
 
 public:
 	ATGD_NekkiCharacter();
 	FORCEINLINE UBaseAbilitySystemComponent* GetAbilitySystemComponent() { return AbilitySystemComponent; };
+
+	
 
 protected:
 
@@ -87,7 +94,8 @@ public:
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 	/** Returns FollowCamera subobject **/
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
-
+	UFUNCTION(BlueprintNativeEvent)
+	void OnDamageTaken(ATGD_NekkiCharacter* InstigatorRef,float Damage);
 
 };
 
